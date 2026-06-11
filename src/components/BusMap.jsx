@@ -65,7 +65,8 @@ function BusMap({ collegeInfo, buses }) {
       <div className="map-error">
         <h3>College location is invalid.</h3>
         <p>
-          Check Firebase: collegeInfo → location → lat and lng must be numbers.
+          Check Firebase: collegeInfo → location → lat and lng must be valid
+          numbers.
         </p>
       </div>
     );
@@ -127,9 +128,7 @@ function BusMap({ collegeInfo, buses }) {
                 <br />
                 Status: {displayStatus}
                 <br />
-                Morning Start: {bus.morningStart}
-                <br />
-                Arrival: {bus.collegeArrival}
+                Speed: {bus.speed || 0} km/h
                 <br />
                 Last Updated:{" "}
                 {bus.updatedAt

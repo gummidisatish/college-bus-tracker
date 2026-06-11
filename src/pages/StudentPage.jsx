@@ -4,9 +4,9 @@ import useBusData from "../hooks/useBusData";
 import { getBusStatus } from "../utils/busStatus";
 
 function StudentPage() {
-  const { collegeInfo, buses, loading } = useBusData();
+  const { collegeInfo, buses, loading, error } = useBusData();
 
-  const [showMap, setShowMap] = useState(false);
+  const [showMap, setShowMap] = useState(true);
   const [selectedBusNumber, setSelectedBusNumber] = useState("All");
 
   const mapSectionRef = useRef(null);
@@ -21,12 +21,23 @@ function StudentPage() {
     );
   }
 
+  if (error) {
+    return (
+      <div className="page">
+        <div className="section">
+          <h2>Firebase Error</h2>
+          <p>{error}</p>
+        </div>
+      </div>
+    );
+  }
+
   if (!collegeInfo) {
     return (
       <div className="page">
         <div className="section">
-          <h2>College data not found in Firebase.</h2>
-          <p>Check whether you imported collegeInfo in Realtime Database.</p>
+          <h2>College data not found.</h2>
+          <p>Check Firebase → Realtime Database → collegeInfo.</p>
         </div>
       </div>
     );
@@ -100,9 +111,7 @@ function StudentPage() {
         {filteredBuses.length === 0 && (
           <div className="empty-message">
             <h3>No bus found.</h3>
-            <p>
-              Check whether busNumber in Firebase is matching correctly.
-            </p>
+            <p>Check busNumber in Firebase.</p>
           </div>
         )}
 
@@ -142,6 +151,10 @@ function StudentPage() {
 
                 <p>
                   <strong>Driver:</strong> {bus.driverName}
+                </p>
+
+                <p>
+                  <strong>Speed:</strong> {bus.speed || 0} km/h
                 </p>
 
                 <p>

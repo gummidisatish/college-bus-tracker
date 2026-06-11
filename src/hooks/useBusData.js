@@ -12,39 +12,62 @@ function useBusData() {
   const [buses, setBuses] = useState([]);
   const [locations, setLocations] = useState({});
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const collegeRef = ref(db, "collegeInfo");
     const busesRef = ref(db, "buses");
     const locationsRef = ref(db, "locations");
 
-    const unsubscribeCollege = onValue(collegeRef, (snapshot) => {
-      const data = snapshot.val();
+    const unsubscribeCollege = onValue(
+      collegeRef,
+      (snapshot) => {
+        const data = snapshot.val();
 
-      if (!data) {
-        setCollegeInfo(null);
-        return;
+        if (!data) {
+          setCollegeInfo(null);
+          return;
+        }
+
+        setCollegeInfo({
+          ...data,
+          location: {
+            lat: toNumber(data?.location?.lat),
+            lng: toNumber(data?.location?.lng),
+          },
+        });
+      },
+      (err) => {
+        console.error(err);
+        setError("Could not read collegeInfo from Firebase.");
       }
+    );
 
-      setCollegeInfo({
-        ...data,
-        location: {
-          lat: toNumber(data?.location?.lat),
-          lng: toNumber(data?.location?.lng),
-        },
-      });
-    });
+    const unsubscribeBuses = onValue(
+      busesRef,
+      (snapshot) => {
+        const data = snapshot.val() || {};
+        const busArray = Object.values(data);
+        setBuses(busArray);
+        setLoading(false);
+      },
+      (err) => {
+        console.error(err);
+        setError("Could not read buses from Firebase.");
+        setLoading(false);
+      }
+    );
 
-    const unsubscribeBuses = onValue(busesRef, (snapshot) => {
-      const data = snapshot.val() || {};
-      const busArray = Object.values(data);
-      setBuses(busArray);
-      setLoading(false);
-    });
-
-    const unsubscribeLocations = onValue(locationsRef, (snapshot) => {
-      setLocations(snapshot.val() || {});
-    });
+    const unsubscribeLocations = onValue(
+      locationsRef,
+      (snapshot) => {
+        setLocations(snapshot.val() || {});
+      },
+      (err) => {
+        console.error(err);
+        setError("Could not read locations from Firebase.");
+      }
+    );
 
     return () => {
       unsubscribeCollege();
@@ -63,14 +86,10 @@ function useBusData() {
 
     return {
       ...bus,
-      currentLocation: hasValidLocation
-        ? {
-            lat,
-            lng,
-          }
-        : null,
+      currentLocation: hasValidLocation ? { lat, lng } : null,
       liveStatus: location?.status || bus.status || "Not Started",
       speed: location?.speed || 0,
+      accuracy: location?.accuracy || 0,
       updatedAt: location?.updatedAt || null,
     };
   });
@@ -79,6 +98,7 @@ function useBusData() {
     collegeInfo,
     buses: busesWithLocations,
     loading,
+    error,
   };
 }
 

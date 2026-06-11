@@ -1,7 +1,8 @@
 import useBusData from "../hooks/useBusData";
+import { getBusStatus } from "../utils/busStatus";
 
 function AdminPage() {
-  const { buses, loading } = useBusData();
+  const { buses, loading, error } = useBusData();
 
   if (loading) {
     return (
@@ -13,15 +14,26 @@ function AdminPage() {
     );
   }
 
+  if (error) {
+    return (
+      <div className="page">
+        <div className="section">
+          <h2>Firebase Error</h2>
+          <p>{error}</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="page">
       <header className="hero">
         <h1>Admin Panel</h1>
-        <p>Admin can manage bus details here.</p>
+        <p>Bus details and live status.</p>
       </header>
 
       <section className="section">
-        <h2>Bus Details from Firebase</h2>
+        <h2>Bus Details</h2>
 
         <div className="table-wrapper">
           <table>
@@ -34,6 +46,8 @@ function AdminPage() {
                 <th>Evening</th>
                 <th>Driver</th>
                 <th>Status</th>
+                <th>Speed</th>
+                <th>Last Updated</th>
               </tr>
             </thead>
 
@@ -46,7 +60,13 @@ function AdminPage() {
                   <td>{bus.collegeArrival}</td>
                   <td>{bus.eveningDeparture}</td>
                   <td>{bus.driverName}</td>
-                  <td>{bus.liveStatus}</td>
+                  <td>{getBusStatus(bus)}</td>
+                  <td>{bus.speed || 0} km/h</td>
+                  <td>
+                    {bus.updatedAt
+                      ? new Date(bus.updatedAt).toLocaleTimeString()
+                      : "Not available"}
+                  </td>
                 </tr>
               ))}
             </tbody>

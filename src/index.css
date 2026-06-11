@@ -9,6 +9,14 @@ body {
   color: #1f2937;
 }
 
+button,
+input,
+select {
+  font-family: inherit;
+}
+
+/* Navbar */
+
 .navbar {
   background: #111827;
   color: white;
@@ -36,6 +44,8 @@ body {
 .nav-links a:hover {
   text-decoration: underline;
 }
+
+/* General Layout */
 
 .page {
   padding: 24px;
@@ -71,6 +81,20 @@ body {
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
 }
 
+.section h2 {
+  margin-top: 0;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+/* Bus Cards */
+
 .bus-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -88,6 +112,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 12px;
 }
 
 .bus-card h3 {
@@ -103,7 +128,15 @@ body {
   border-radius: 20px;
   font-size: 13px;
   font-weight: bold;
+  white-space: nowrap;
 }
+
+.status.green {
+  background: #dcfce7;
+  color: #166534;
+}
+
+/* Buttons */
 
 .primary-btn {
   background: #2563eb;
@@ -133,6 +166,29 @@ body {
   background: #b91c1c;
 }
 
+.secondary-btn {
+  background: #374151;
+  color: white;
+  border: none;
+  padding: 11px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.secondary-btn:hover {
+  background: #1f2937;
+}
+
+.primary-btn:disabled,
+.danger-btn:disabled,
+.secondary-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Forms */
+
 .form-card {
   background: white;
   max-width: 520px;
@@ -153,6 +209,16 @@ body {
   border: 1px solid #d1d5db;
   border-radius: 8px;
   margin-bottom: 18px;
+  font-size: 15px;
+}
+
+.text-input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  margin-bottom: 18px;
+  font-size: 15px;
 }
 
 .button-row {
@@ -167,52 +233,7 @@ body {
   color: #2563eb;
 }
 
-.table-wrapper {
-  overflow-x: auto;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-th,
-td {
-  padding: 14px;
-  border-bottom: 1px solid #e5e7eb;
-  text-align: left;
-}
-
-th {
-  background: #f9fafb;
-  color: #374151;
-}
-
-@media (max-width: 600px) {
-  .navbar {
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .nav-links {
-    gap: 12px;
-  }
-
-  .page {
-    padding: 14px;
-  }
-
-  .hero {
-    padding: 20px;
-  }
-}
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 20px;
-}
+/* Filter */
 
 .filter-box {
   max-width: 300px;
@@ -232,38 +253,12 @@ th {
   border-radius: 8px;
 }
 
+/* Map */
+
 .map-wrapper {
   width: 100%;
   height: 450px;
-  margin-bottom: 24px;
-  border-radius: 14px;
-  overflow: hidden;
-  border: 1px solid #e5e7eb;
-}
-
-.bus-map {
-  width: 100%;
-  height: 100%;
-}
-
-.status.green {
-  background: #dcfce7;
-  color: #166534;
-}
-
-@media (max-width: 600px) {
-  .section-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .map-wrapper {
-    height: 360px;
-  }
-}
-.map-wrapper {
-  width: 100%;
-  height: 450px;
+  min-height: 450px;
   margin-bottom: 24px;
   border-radius: 14px;
   overflow: hidden;
@@ -286,14 +281,31 @@ th {
   margin-bottom: 20px;
 }
 
-.empty-message {
-  background: #fff7ed;
-  border: 1px solid #fed7aa;
-  color: #9a3412;
-  padding: 16px;
-  border-radius: 10px;
-  margin-bottom: 20px;
+/* Table */
+
+.table-wrapper {
+  overflow-x: auto;
 }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 14px;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+}
+
+th {
+  background: #f9fafb;
+  color: #374151;
+}
+
+/* Driver Page */
+
 .driver-info-box,
 .location-box {
   background: #f9fafb;
@@ -322,4 +334,72 @@ th {
   margin-top: 18px;
   color: #6b7280;
   font-size: 14px;
+}
+
+/* Empty Message */
+
+.empty-message {
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  color: #9a3412;
+  padding: 16px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+/* Mobile Responsive */
+
+@media (max-width: 600px) {
+  .navbar {
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .nav-links {
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .page {
+    padding: 14px;
+  }
+
+  .hero {
+    padding: 20px;
+  }
+
+  .section {
+    padding: 18px;
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .map-wrapper {
+    height: 360px;
+    min-height: 360px;
+  }
+
+  .bus-map {
+    min-height: 360px;
+  }
+
+  .button-row {
+    flex-direction: column;
+  }
+
+  .primary-btn,
+  .danger-btn,
+  .secondary-btn {
+    width: 100%;
+  }
+
+  .bus-card-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
 }
